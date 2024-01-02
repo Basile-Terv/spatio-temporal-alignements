@@ -10,7 +10,7 @@ from sta.utils import cost_matrix, tonumpy
 # change this if you have GPUs
 # in our platform, this experiment ran on 4 GPUs in around 8 minutes
 
-n_gpu_devices = 0
+n_gpu_devices = 1
 
 if __name__ == "__main__":
 
