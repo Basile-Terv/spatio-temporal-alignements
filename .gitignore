@@ -14,6 +14,11 @@ Papers/
 # Plotted pdf figures
 *.pdf
 
+# Other
+*.json
+*.wandb
+*.yaml
+
 # C extensions
 *.so
 
