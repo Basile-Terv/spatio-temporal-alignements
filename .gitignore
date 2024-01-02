@@ -5,6 +5,12 @@ __pycache__/
 
 .DS_store
 
+# Papers
+Papers/
+
+# Requirements
+*.txt
+
 # C extensions
 *.so
 

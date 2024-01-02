@@ -80,8 +80,8 @@ if __name__ == "__main__":
     values = [5, 0, 3]
     gaps = [6, 12, 8]
 
-    mass = 150
-    signal = gaussian_mixture(means, sds, values, gaps, T_max, mass=mass,
+    mass = [150]
+    signal = gaussian_mixture(means, sds, values, gaps, T_max, masses=mass,
                               offset=True)
     start, end = T_max // 2 - T // 2, T_max // 2 + T // 2
     x = signal[start: end]

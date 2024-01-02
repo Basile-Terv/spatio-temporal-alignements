@@ -74,4 +74,4 @@ if __name__ == "__main__":
                     titles = None
                 imshow(img, cmap="Purples", axes=ax_row, titles=titles,
                        letter=letter)
-        plt.savefig("fig/all-letters.pdf", tight_layout=True)
+        plt.savefig("fig/all-letters.pdf")
