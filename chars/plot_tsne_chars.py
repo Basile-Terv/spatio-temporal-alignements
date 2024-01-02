@@ -23,8 +23,8 @@ methods = ["soft", "sta"]
 titles = ["soft-DTW", "STA"]
 
 betas = experiment["betas"]
-betas = [0.1]  # Main figure of the paper
-betas = [0, 0.1, 1.]  # supplementary figure
+# betas = [0.1]  # Main figure of the paper
+# betas = [0, 0.1, 1.]  # supplementary figure
 
 colors = ["indianred", "cornflowerblue", "gold", "purple", "navy",
           "forestgreen", "pink", "cyan", "black", "orange", "gray",
