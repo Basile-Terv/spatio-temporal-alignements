@@ -9,7 +9,7 @@ from sklearn.manifold import TSNE
 # change this if you have GPUs
 # in our platform, this experiment ran on 4 GPUs in around 20 minutes
 
-n_gpu_devices = 0
+n_gpu_devices = 1
 
 
 def generate_samples(n_samples, n_times, time_point, space_points, M,
