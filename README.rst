@@ -59,7 +59,7 @@ Then proceed to the sta folder and run:
 -----------------
 
 0. Make sur `mne` is installed.
-1. Open `run_tsne_brains.py` to set the `n_gpus` and `n_jobs` params and run it to reproduce Figure 5.
+1. Open `run_tsne_brain.py` to set the `n_gpus` and `n_jobs` params and run it to reproduce Figure 5.
 2. To reproduce Figure 4, verify your installation of mayavi and pysurfer and run `plot_brains.py`.
     This last step can eventually take time because the MNE-Sample data must be downloaded.
 
@@ -68,5 +68,5 @@ Then proceed to the sta folder and run:
 
 0. Run `process_chars.py` to generate and save the processed data.
 1. Run `plot_chars.py` to visualize the chars (figure 6)
-2. Open `run_tsne_brains.py` to set the `n_gpus` and `n_jobs` params and  to compute and save the tsne maps
+2. Open `run_tsne_chars.py` to set the `n_gpus` and `n_jobs` params and  to compute and save the tsne maps
 3. run `plot_tsne_chars.py` to reproduce Figure 7.
