@@ -9,7 +9,9 @@ __pycache__/
 Papers/
 
 # Requirements
-*.txt
+# *.txt
+
+
 
 # Plotted pdf figures
 *.pdf
@@ -18,6 +20,7 @@ Papers/
 *.json
 *.wandb
 *.yaml
+*/wandb/*
 
 # C extensions
 *.so

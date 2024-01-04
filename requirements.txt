@@ -1,0 +1,16 @@
+numpy
+cython
+joblib
+matplotlib
+scikit-learn
+# soft-dtw
+torch
+pandas
+numba
+pyts
+# Optional
+mne
+mayavi
+pysurfer
+# In addition to original repo's requirements
+wandb
