@@ -11,10 +11,9 @@ Papers/
 # Requirements
 # *.txt
 
-
-
 # Plotted pdf figures
 *.pdf
+*.png
 
 # Other
 *.json
