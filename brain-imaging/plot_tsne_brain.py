@@ -16,7 +16,7 @@ plt.rcParams.update(params)
 
 
 def get_expe_filename(n_samples_per_task, n_times, time0, time1, betas):
-    return "data/tsne-brains_ns{}_nt{}_t0{}_t1{}_b{}.pkl".format(
+    return "tsne-brains_ns{}_nt{}_t0{}_t1{}_b{}".format(
         n_samples_per_task, n_times, time0, time1, "_".join(map(str, betas)))
 
 
@@ -33,10 +33,14 @@ perplexity=args.perplexity
 
 
 expe_filename = get_expe_filename(n_samples_per_task, n_times, time0, time1, betas)
-print('------filename of the experiment to copy in the plot cell below-----')
-print(expe_filename)
+data_expe_filename=f'data/{expe_filename}.pkl'
+fig_expe_filename=f'fig/{expe_filename}.pdf'
+fig_expe_filename_png=f'fig/{expe_filename}.png'
+print('------filename of the figures of the experiment to copy in the plot cell below-----')
+print(fig_expe_filename)
+print(fig_expe_filename_png)
 print('-------------------------------------')
-expe_file = open(expe_filename, "rb")
+expe_file = open(data_expe_filename, "rb")
 experiment = pickle.load(expe_file)
 
 y_time = experiment["y_time"]
@@ -80,6 +84,8 @@ for j, (ax_row, beta) in enumerate(zip(axes, betas)):
             ax.set_title(title)
 ax.legend(handles=legend_colors, loc=2, ncol=2, bbox_to_anchor=[-0.9, 0.0])
 if len(betas) > 2:
-    plt.savefig("fig/tsne-meg-all.pdf")
+    # plt.savefig("fig/tsne-meg-all.pdf")
+    plt.savefig(fig_expe_filename)
 else:
-    plt.savefig("fig/tsne-meg.pdf")
+    # plt.savefig("fig/tsne-meg.pdf")
+    plt.savefig(fig_expe_filename)

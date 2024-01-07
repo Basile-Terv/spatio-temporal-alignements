@@ -67,6 +67,7 @@ if __name__ == "__main__":
     print('gamma=',gamma)
     print('epsilon=',epsilon)
     print('---------------------------')
+    print('betas=',betas)
     K = np.exp(- M / epsilon)
 
     mt_vertices = mt.vertices[mt.vertices < 642]
