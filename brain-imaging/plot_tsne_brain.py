@@ -2,6 +2,7 @@ from matplotlib import pyplot as plt
 import pickle
 import numpy as np
 from matplotlib.lines import Line2D
+from arg_parser import create_tsne_parser
 
 
 fontsize = 11
@@ -14,8 +15,30 @@ params = {'axes.labelsize': fontsize + 2,
 plt.rcParams.update(params)
 
 
-expe_file = open("data/tsne-brains.pkl", "rb")
+def get_expe_filename(n_samples_per_task, n_times, time0, time1, betas):
+    return "data/tsne-brains_ns{}_nt{}_t0{}_t1{}_b{}.pkl".format(
+        n_samples_per_task, n_times, time0, time1, "_".join(map(str, betas)))
+
+
+parser = create_tsne_parser()
+args = parser.parse_args()
+n_samples_per_task = args.n_samples_per_task
+n_times = args.n_times
+time0 = args.time0
+time1 = args.time1
+betas = args.betas
+gamma = args.gamma
+epsilon = args.epsilon
+perplexity=args.perplexity
+
+
+expe_filename = get_expe_filename(n_samples_per_task, n_times, time0, time1, betas)
+print('------filename of the experiment to copy in the plot cell below-----')
+print(expe_filename)
+print('-------------------------------------')
+expe_file = open(expe_filename, "rb")
 experiment = pickle.load(expe_file)
+
 y_time = experiment["y_time"]
 y_space = experiment["y_space"]
 
@@ -57,6 +80,6 @@ for j, (ax_row, beta) in enumerate(zip(axes, betas)):
             ax.set_title(title)
 ax.legend(handles=legend_colors, loc=2, ncol=2, bbox_to_anchor=[-0.9, 0.0])
 if len(betas) > 2:
-    plt.savefig("fig/tsne-meg-all.pdf", tight_layout=True)
+    plt.savefig("fig/tsne-meg-all.pdf")
 else:
-    plt.savefig("fig/tsne-meg.pdf", tight_layout=True)
+    plt.savefig("fig/tsne-meg.pdf")

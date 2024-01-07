@@ -5,6 +5,7 @@ import pickle
 import numpy as np
 from sta import sta_matrix, sdtw_matrix
 from sklearn.manifold import TSNE
+from arg_parser import create_tsne_parser
 
 # change this if you have GPUs
 # in our platform, this experiment ran on 4 GPUs in around 20 minutes
@@ -37,7 +38,6 @@ def generate_samples(n_samples, n_times, time_point, space_points, M,
     return signals
 
 if __name__ == "__main__":
-
     # load brain regions
     mt = mne.read_label("data/lh.MT.label")
     v1 = mne.read_label("data/lh.V1.label")
@@ -47,18 +47,34 @@ if __name__ == "__main__":
     M = M_ / np.median(M_)
 
     vertices = [np.arange(642), []]
-    gamma = 1.
     n_features = len(M)
-    epsilon = 10. / n_features
+    print('n_features=',n_features)
+
+
+    parser = create_tsne_parser()
+    args = parser.parse_args()
+    n_samples_per_task = args.n_samples_per_task
+    n_times = args.n_times
+    time0 = args.time0
+    time1 = args.time1
+    betas = args.betas
+    gamma = args.gamma
+    epsilon = args.epsilon
+    perplexity=args.perplexity
+
+
+    print('----OT hyperparameters values--------')
+    print('gamma=',gamma)
+    print('epsilon=',epsilon)
+    print('---------------------------')
     K = np.exp(- M / epsilon)
 
     mt_vertices = mt.vertices[mt.vertices < 642]
     v1_vertices = v1.vertices[v1.vertices < 642]
+    print('mt_vertices.shape=',mt_vertices.shape)
+    print('v1_vertices.shape=',v1_vertices.shape)
 
     seed = 42
-    n_samples_per_task = 50
-    n_times = 20
-    time0, time1 = 5, 15
 
     # Create the four categories of brain signals with different random seeds
     meg_v1_0 = generate_samples(n_samples_per_task, n_times, time0,
@@ -78,19 +94,30 @@ if __name__ == "__main__":
                              n_samples_per_task * [1]].tolist()]
     y_space = np.r_[2 * n_samples_per_task * [0], 2 * n_samples_per_task * [1]]
 
-    betas = [0, 0.001, 0.01, 0.1, 0.5, 1., 2., 3., 5., 10.]
     experiment = dict(meg=meg, y_time=y_time, y_space=y_space, betas=betas)
     train_data = []
     n_samples, n_times, dimension = meg.shape
+    print('----MEG signals are the training data for t-SNE-----')
+    print('n_samples=',n_samples)
+    print('n_times=',n_times)
+    print('dimension=',dimension)
+    print('-------------------------------------')
+
     params = dict(K=K, epsilon=epsilon, gamma=gamma, n_jobs=4,
                   n_gpu_devices=n_gpu_devices)
+    
+    # compute sta distance matrix
+    print('-----Starting sta_matrix computation-------')
     precomputed = sta_matrix(meg, betas, **params)
+    print('-----sta_matrix computed -------')
+    print('precomputed sta_matrix has shape',precomputed.shape)
+
     experiment["sta"] = dict()
     for beta, train_ in zip(betas, precomputed):
         train = train_.copy()
         # shift the distance to avoid negative values with large betas
         train -= train.min()
-        tsne_data = TSNE(metric="precomputed").fit_transform(train)
+        tsne_data = TSNE(metric="precomputed",perplexity=perplexity,init='random').fit_transform(train)
         experiment["sta"][beta] = tsne_data
 
     method = "soft"
@@ -100,8 +127,11 @@ if __name__ == "__main__":
         train = precomputed.copy()
         # shift the distance to avoid negative values with large betas
         train -= train.min()
-        tsne_data = TSNE(metric="precomputed").fit_transform(train)
+        tsne_data = TSNE(metric="precomputed",perplexity=perplexity,init='random').fit_transform(train)
         experiment[method][beta] = tsne_data
 
-    expe_file = open("data/tsne-brains.pkl", "wb")
+    expe_filename = "data/tsne-brains_ns{}_nt{}_t0{}_t1{}_b{}.pkl".format(
+    n_samples_per_task, n_times, time0, time1, "_".join(map(str, betas)))
+    expe_file = open(expe_filename, "wb")
+
     pickle.dump(experiment, expe_file)
