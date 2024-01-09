@@ -13,7 +13,6 @@ Papers/
 
 # Plotted pdf figures
 *.pdf
-*.png
 
 # Other
 *.json
